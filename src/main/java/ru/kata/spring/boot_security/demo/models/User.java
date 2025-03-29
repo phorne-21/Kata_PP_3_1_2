@@ -1,12 +1,15 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import jakarta.persistence.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
+//public class User implements UserDetails {
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -14,6 +17,9 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "email")
     private String email;
@@ -24,9 +30,10 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String email, Integer age) {
+    public User(Long id, String name, String password, String email, Integer age) {
         this.id = id;
         this.name = name;
+        this.password = password;
         this.email = email;
         this.age = age;
     }
@@ -45,6 +52,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -67,12 +82,16 @@ public class User {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(email, user.email);
+        return id == user.id
+                && age == user.age
+                && Objects.equals(name, user.name)
+                && Objects.equals(password, user.password)
+                && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, age);
+        return Objects.hash(id, name, password, email, age);
     }
 
     @Override
@@ -80,6 +99,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
                 '}';

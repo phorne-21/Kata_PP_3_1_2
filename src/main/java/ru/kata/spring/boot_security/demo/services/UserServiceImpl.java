@@ -3,48 +3,47 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import web.kata.pre_project.Dao.UserDao;
-import web.kata.pre_project.model.User;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.models.User;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
     public void save(User user) {
-        userDao.add(user);
+        userRepository.save(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public User findById(Long id) {
-        return userDao.findById(id);
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<User> findAll() {
-        return userDao.getAll();
+        return userRepository.findAll();
     }
 
     @Override
     @Transactional
     public void update(User user) {
-        userDao.update(user);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        userDao.delete(id);
+        userRepository.deleteById(id);
     }
 }
