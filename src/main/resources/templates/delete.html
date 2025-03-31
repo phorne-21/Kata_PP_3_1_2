@@ -30,6 +30,9 @@
     <form th:action="@{/users}">
         <input type="submit" value="No" style="background-color: green; color: white;"/>
     </form>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger">Выйти</button>
+    </form>
 </h3>
 <p style="text-align: center;">
     <a th:href="@{/users}">Go to User list</a>
